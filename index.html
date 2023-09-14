@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Praveen's Coffee Vending Machine</title>
+    <style>
+    h1{
+        color: rgb(110, 75, 51);
+    
+    }
+      body {
+        font-size: large;
+        border:5px solid rgb(150, 36, 189);
+        border-style:double;
+        margin-right: 30%;
+        margin-left: 30%;
+        background-color: rgb(104, 176, 199);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .container {
+        padding-bottom: 10%;
+        width: 500px;
+        margin: 0 auto;
+      }
+
+      .coffee-type {
+        margin-bottom: 10px;
+        
+      }
+
+      .coffee-price {
+    
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .remaining-amount {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .loading-bar {
+        width: 100%;
+        height: 20px;
+        border-radius: 20px;
+      }
+
+      .loading-bar-progress {
+        width: 0%;
+        height: 20px;
+        background-color: #15cf4d;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Coffee Vending Machine</h1>
+      <div class="coffee-type">
+        <h3><u>Choose your coffee</u></h3>
+        <input type="radio" name="coffee-type" value="15" />
+        Espresso &#8377;15<br />
+        <input type="radio" name="coffee-type" value="20" /> Latte &#8377;20<br />
+        <input type="radio" name="coffee-type" value="25" /> Cappuccino
+        &#8377;25<br />
+      </div>
+      <div class="coffee-size">
+        <h3><u>Select Cup Size</u></h3>
+        <input type="radio" name="coffee-size" value="half" />
+        Half Cup <br />
+        <input type="radio" name="coffee-size" value="full" /> Full Cup
+      </div>
+      <br>
+      <div class="coffee-price">
+        coffee price:
+        <span id="coffee-price"> &#8377; 0</span>
+      </div>
+      <div></div>
+      <div style="margin-top: 30px">
+        <h3><u>Insert Amount</u></h3>
+        <div style="display: flex">
+          <img
+            id="tenRupees"
+            style="width: 150px; cursor: pointer"
+            src="https://hi-static.z-dn.net/files/d60/1ca6e2f8ea8090c979600b88438ec602.jpg"
+            alt=""
+          />
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap:10px;
+              margin-left: 20px;
+            "
+          >
+            <button onclick="decreaseCount(10)">-</button>
+            <p id="noOfTens">0</p>
+            <button onclick="increaseCount(10)">+</button>
+          </div>
+        </div>
+        <br>
+        <div style="display: flex">
+          <img
+            id="tenRupees"
+            style="width: 150px; cursor: pointer"
+            src="https://banknotenews.com/wp-content/uploads/2017/08/India_RBI_50_rupees_2017.00.00_B300a_P111_1AN_218888_f-1536x759.jpg"
+            alt=""
+          />
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-left: 20px;
+            "
+          >
+            <button onclick="decreaseCount(50)">-</button>
+            <p id="noOfFiftys">0</p>
+            <button onclick="increaseCount(50)">+</button>
+          </div>
+        </div>
+        <br>
+        <div style="display: flex">
+          <img
+            id="tenRupees"
+            style="width: 150px; cursor: pointer"
+            src="https://banknotenews.com/wp-content/uploads/2018/09/India_RBI_100_rupees_2018.00.00_B301a_P112_0AA_156888_f.jpg"
+            alt=""
+          />
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-left: 20px;
+            "
+          >
+            <button onclick="decreaseCount(100)">-</button>
+            <p id="noOfHundreds">0</p>
+            <button onclick="increaseCount(100)">+</button>
+          </div>
+        </div>
+        <br>
+        <div class="receivedAmount">
+          <b>
+            Total Amount Received:
+            <span id="receivedAmount">&#8377; 0</span></b
+          >
+        </div>
+      </div>
+      <button onclick="buyCoffee()" style="margin-top: 10px">Buy Coffee</button><br>
+      <br>
+      <div class="loading-bar">
+        <div class="loading-bar-progress"></div>
+      </div>
+      <div class="remaining-amount" style="margin-top: 10px">
+        <b><span id="remainingAmount"></span></b>
+      </div>
+    </div>
+    <script>
+      let selectedAmount = 0;
+      let selectedType = "";
+      let result = 0;
+
+      let tenRupees = 0;
+      let fiftyRupees = 0;
+      let hundredRupees = 0;
+      let totalReceivedAmount = 0;
+
+      let progress = 0;
+
+      function increaseCount(receivedNotes) {
+        switch (receivedNotes) {
+          case 10:
+            tenRupees = tenRupees + 1;
+            document.getElementById("noOfTens").innerHTML = tenRupees;
+            break;
+          case 50:
+            fiftyRupees = fiftyRupees + 1;
+            document.getElementById("noOfFiftys").innerHTML = fiftyRupees;
+            break;
+          case 100:
+            hundredRupees = hundredRupees + 1;
+            document.getElementById("noOfHundreds").innerHTML = hundredRupees;
+            break;
+        }
+
+        totalReceivedAmount =
+          tenRupees * 10 + fiftyRupees * 50 + hundredRupees * 100;
+        document.getElementById(
+          "receivedAmount"
+        ).innerHTML = `&#8377; ${totalReceivedAmount}`;
+      }
+
+      function decreaseCount(receivedNotes) {
+        switch (receivedNotes) {
+          case 10:
+            if (tenRupees != 0) {
+              tenRupees = tenRupees - 1;
+              document.getElementById("noOfTens").innerHTML = tenRupees;
+            }
+            break;
+          case 50:
+            if (fiftyRupees != 0) {
+              fiftyRupees = fiftyRupees - 1;
+              document.getElementById("noOfFiftys").innerHTML = fiftyRupees;
+            }
+            break;
+          case 100:
+            if (hundredRupees != 0) {
+              hundredRupees = hundredRupees - 1;
+              document.getElementById("noOfHundreds").innerHTML = hundredRupees;
+            }
+            break;
+        }
+        totalReceivedAmount =
+          tenRupees * 10 + fiftyRupees * 50 + hundredRupees * 100;
+        document.getElementById(
+          "receivedAmount"
+        ).innerHTML = `&#8377; ${totalReceivedAmount}`;
+      }
+
+      const amountRadio = document.getElementsByName("coffee-type");
+      const typeRadio = document.getElementsByName("coffee-size");
+
+      for (const radioButton of amountRadio) {
+        radioButton.addEventListener("change", updateResult);
+      }
+
+      for (const radioButton of typeRadio) {
+        radioButton.addEventListener("change", updateResult);
+      }
+
+      function updateResult() {
+        for (const radio of amountRadio) {
+          if (radio.checked) {
+            selectedAmount = Number(radio.value);
+            break;
+          }
+        }
+        for (const radio of typeRadio) {
+          if (radio.checked) {
+            selectedType = radio.value;
+            break;
+          }
+        }
+
+        result = selectedAmount;
+
+        if (selectedType == "half") {
+          result /= 2;
+        }
+
+        document.getElementById(
+          "coffee-price"
+        ).innerHTML = ` &#8377; ${result}`;
+      }
+
+      function buyCoffee() {
+        if (selectedAmount == 0) {
+          alert("Select a coffee type");
+        } else if (selectedType == "") {
+          alert("Please select the cup size");
+        } else if (totalReceivedAmount < result) {
+          alert("Please add some Money to buy This coffee");
+        } else {
+          let loadingBar = document.querySelector(".loading-bar");
+          let loadingBarProgress = document.querySelector(
+            ".loading-bar-progress"
+          );
+          let interval = setInterval(function () {
+            progress++;
+            loadingBarProgress.style.width = progress + "%";
+            if (progress === 100) {
+              clearInterval(interval);
+              alert(
+                "Your coffee is ready. Take your coffee and collect change.Thank you!"
+              );
+              console.log(totalReceivedAmount);
+              document.getElementById(
+                "remainingAmount"
+              ).innerHTML = `Balance Amount : &#8377;${
+                totalReceivedAmount - result
+              }`;
+            }
+          }, 50);
+        }
+      }
+    </script>
+  </body>
+</html>
